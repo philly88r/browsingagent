@@ -1,0 +1,12 @@
+{
+  "domain": "login.bark.com",
+  "lessons": [
+    {
+      "text": "Task completed in 15 actions: Log in with my credentials and navigate to the Leads tab\ngo through each of the leads - then look at the details of the ",
+      "type": "success",
+      "url": "https://login.bark.com/oauth2/authorize?client_id=40449302-dcf9-42c4-8d46-fe4a96c6230d&response_type=code&redirect_uri=https%3A%2F%2Fwww.bark.com%2Flogin%2Fredirect%2Foauth2%2F&state=%7B%22redirects%22%3A1%7D",
+      "ts": "2026-04-22T15:11:05.660712"
+    }
+  ],
+  "pages": {}
+}

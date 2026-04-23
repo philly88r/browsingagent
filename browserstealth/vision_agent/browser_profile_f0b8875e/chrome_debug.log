@@ -1,0 +1,13 @@
+[16984:30972:0422/144334.183:INFO:components\enterprise\browser\controller\chrome_browser_cloud_management_controller.cc:238] No machine level policy manager exists.
+[30628:30420:0422/144334.252:ERROR:ui\gl\direct_composition_support.cc:243] GetGpuDriverOverlayInfo: Failed to retrieve video device
+[30628:30420:0422/144334.252:VERBOSE1:components\viz\service\main\viz_main_impl.cc:86] VizNullHypothesis is disabled (not a warning)
+[36224:28804:0422/144334.305:INFO:third_party\webrtc\rtc_base\cpu_info.cc:77] Available number of cores: 16
+[9212:23948:0422/144334.306:INFO:third_party\webrtc\rtc_base\cpu_info.cc:77] Available number of cores: 16
+[19884:19168:0422/144334.505:INFO:third_party\webrtc\rtc_base\cpu_info.cc:77] Available number of cores: 16
+[16984:30972:0422/144334.619:ERROR:CONSOLE:18] "This document requires 'TrustedHTML' assignment. The action has been blocked.", source:  (18)
+[19904:4324:0422/144334.702:INFO:third_party\webrtc\rtc_base\cpu_info.cc:77] Available number of cores: 16
+[16984:30972:0422/144335.187:ERROR:mojo\public\cpp\bindings\lib\interface_endpoint_client.cc:748] Message 1 rejected by interface blink.mojom.WidgetHost
+[16984:30972:0422/144335.359:INFO:CONSOLE:0] "[DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o", source: https://www.amazon.com/ap/signin?openid.pape.max_auth_age=0&openid.return_to=https%3A%2F%2Fkdp.amazon.com%2Fmarketing%2Fmanager&openid.identity=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.assoc_handle=amzn_dtp&openid.mode=checkid_setup&language=en_US&openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&pageId=kdp-ap&openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0 (0)
+[16984:38012:0422/144337.789:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+[16320:29864:0422/144342.205:WARNING:net\extras\sqlite\sqlite_persistent_store_backend_base.cc:176] Failed to post task from FlushAndNotifyInBackground@net\extras\sqlite\sqlite_persistent_store_backend_base.cc:226 to client_task_runner_.
+[16320:29864:0422/144342.205:WARNING:net\extras\sqlite\sqlite_persistent_store_backend_base.cc:176] Failed to post task from FlushAndNotifyInBackground@net\extras\sqlite\sqlite_persistent_store_backend_base.cc:226 to client_task_runner_.

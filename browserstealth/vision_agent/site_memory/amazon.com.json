@@ -1,0 +1,54 @@
+{
+  "domain": "amazon.com",
+  "lessons": [
+    {
+      "text": "Task completed in 18 actions: go here and login if needed then go to amazon a plus content select amazon.com then we are going to create 3 modules her",
+      "type": "success",
+      "url": "https://www.amazon.com/ap/mfa/new-otp?ie=UTF8&arb=3a384800-8068-4504-96a0-42574670b12d",
+      "ts": "2026-04-20T09:00:55.613229"
+    },
+    {
+      "text": "Task completed in 102 actions: go here and login if needed then go to amazon a plus content select amazon.com then we are going to create 3 modules her",
+      "type": "success",
+      "url": "https://www.amazon.com/ap/signin?clientContext=133-0326469-3606347&openid.return_to=https%3A%2F%2Fkdp.amazon.com%2Faplus%2Fcontent-manager&openid.identity=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.assoc_handle=amzn_dtp&openid.mode=checkid_setup&fct=Fct.RwJAwlY0es6AqMYDlB4_uzBWCGiOxB7XEoGElZz790c6Gx0dk4XKFn2DeyjlLjH-GuGzhGSbhfvnS-TjGN72TQ3h8RJupKYFt_4IC4quPWxFknJuLH6Cs8u1v97YqoHEd5uir4y1PnAgJC0GgTcC3JMr77OnHUTVc_xbIDXcciMFWVr-_0cuXagUgp0vmUB_p9vSiZs9CDkfd3pJoqxUsjC13vqT5KFTdH3yiZlLVrZPbtkJ51wrINjLQaAbuYguXTdYVhHfrYGcyj8E4wgcUlLl7A&language=en_US&openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0",
+      "ts": "2026-04-20T19:57:33.699716"
+    },
+    {
+      "text": "Task completed in 104 actions: go here and login if needed then go to amazon a plus content select amazon.com then we are going to create 3 modules her",
+      "type": "success",
+      "url": "https://www.amazon.com/ap/signin",
+      "ts": "2026-04-21T20:11:20.672940"
+    },
+    {
+      "text": "Task completed in 9 actions: go here and login if needed then go to amazon a plus content select amazon.com then we are going to create 3 modules her",
+      "type": "success",
+      "url": "https://www.amazon.com/ap/mfa?ie=UTF8&arb=c1eaf053-f5a7-43f1-8da2-8179fe76be33&mfa.arb.value=c1eaf053-f5a7-43f1-8da2-8179fe76be33&mfa.arb.key=arb",
+      "ts": "2026-04-22T18:42:21.198350"
+    },
+    {
+      "text": "Task completed in 9 actions: CRITICAL \u2014 BROWSER ALREADY OPEN: Do NOT navigate, reload, or go to any URL. The browser is showing the correct page righ",
+      "type": "success",
+      "url": "https://www.amazon.com/ap/mfa?ie=UTF8&arb=c1eaf053-f5a7-43f1-8da2-8179fe76be33&mfa.arb.value=c1eaf053-f5a7-43f1-8da2-8179fe76be33&mfa.arb.key=arb",
+      "ts": "2026-04-22T18:48:46.726099"
+    },
+    {
+      "text": "Task completed in 14 actions: go here and login if needed then go to amazon a plus content select amazon.com then we are going to create 3 modules her",
+      "type": "success",
+      "url": "https://www.amazon.com/ap/mfa?ie=UTF8&arb=f6c49b20-4ae3-4151-931b-d0ea91544435&mfa.arb.value=f6c49b20-4ae3-4151-931b-d0ea91544435&mfa.arb.key=arb",
+      "ts": "2026-04-22T19:02:27.138798"
+    },
+    {
+      "text": "Task completed in 14 actions: CRITICAL \u2014 BROWSER ALREADY OPEN: Do NOT navigate, reload, or go to any URL. The browser is showing the correct page righ",
+      "type": "success",
+      "url": "https://www.amazon.com/ap/mfa?ie=UTF8&arb=f6c49b20-4ae3-4151-931b-d0ea91544435&mfa.arb.value=f6c49b20-4ae3-4151-931b-d0ea91544435&mfa.arb.key=arb",
+      "ts": "2026-04-22T19:12:03.674911"
+    },
+    {
+      "text": "Task completed in 12 actions: go here and login if needed then go to amazon a plus content select amazon.com then we are going to create 3 modules her",
+      "type": "success",
+      "url": "https://www.amazon.com/ap/signin?openid.pape.max_auth_age=0&openid.return_to=https%3A%2F%2Fkdp.amazon.com%2Fmarketing%2Fmanager&openid.identity=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.assoc_handle=amzn_dtp&openid.mode=checkid_setup&language=en_US&openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&pageId=kdp-ap&openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0",
+      "ts": "2026-04-22T20:37:51.324000"
+    }
+  ],
+  "pages": {}
+}

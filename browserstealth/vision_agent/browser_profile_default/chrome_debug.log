@@ -1,0 +1,24 @@
+[36944:32224:0422/140219.105:INFO:components\enterprise\browser\controller\chrome_browser_cloud_management_controller.cc:238] No machine level policy manager exists.
+[22580:29580:0422/140219.170:ERROR:ui\gl\direct_composition_support.cc:243] GetGpuDriverOverlayInfo: Failed to retrieve video device
+[22580:29580:0422/140219.171:VERBOSE1:components\viz\service\main\viz_main_impl.cc:86] VizNullHypothesis is disabled (not a warning)
+[13940:29844:0422/140219.213:INFO:third_party\webrtc\rtc_base\cpu_info.cc:77] Available number of cores: 16
+[34020:24844:0422/140219.213:INFO:third_party\webrtc\rtc_base\cpu_info.cc:77] Available number of cores: 16
+[21228:13452:0422/140219.398:INFO:third_party\webrtc\rtc_base\cpu_info.cc:77] Available number of cores: 16
+[36944:32224:0422/140219.518:ERROR:CONSOLE:18] "This document requires 'TrustedHTML' assignment. The action has been blocked.", source:  (18)
+[29060:21948:0422/140219.607:INFO:third_party\webrtc\rtc_base\cpu_info.cc:77] Available number of cores: 16
+[37936:8880:0422/140220.537:INFO:third_party\webrtc\rtc_base\cpu_info.cc:77] Available number of cores: 16
+[36944:27088:0422/140222.562:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+[36944:27088:0422/140248.878:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+[36944:32224:0422/140321.016:INFO:CONSOLE:4] "Error logged with the Track&Report JS errors API(http://tiny/1covqr6l8/wamazindeClieUserJava): {"m":"A copy of P has already been loaded on this page.","csm":"v5 ueLogError callee","logLevel":"FATAL","attribution":"sc-navbar-container a-page","pageURL":"https://kdp.amazon.com/aplus/content-manager","s":[],"t":377,"fcsmln":3,"cinfo":{"1":"<head><script async=\"\" src=\"https://images-na.ssl-images-amazon.com/images/I/21auWwkMYgL.js\" crossorigin=\"anonymous\"></script><iframe src=\"javascript:void(0)\" title=\"\" role=\"presentation\" style=\"width: 0px; height: 0px; border: 0px; display: none;\"></iframe><script>var aPageStart = (new Date()).getTime();</script><meta charset=\"utf-8\">","2":"<script type=\"text/javascript\">window.ue_mkt = \"scna\";</script>"}} [object Object]", source: https://images-na.ssl-images-amazon.com/images/I/21auWwkMYgL.js (4)
+[36944:32224:0422/140321.017:INFO:CONSOLE:4] "Error logged with the Track&Report JS errors API(http://tiny/1covqr6l8/wamazindeClieUserJava): {"m":"AUIDefineJS is already present globally","csm":"v5 ueLogError callee","logLevel":"FATAL","attribution":"AmazonUIPageJS@AUIDefineJS","pageURL":"https://kdp.amazon.com/aplus/content-manager","s":[],"t":379,"fcsmln":3,"cinfo":{"1":"<head><script async=\"\" src=\"https://images-na.ssl-images-amazon.com/images/I/21auWwkMYgL.js\" crossorigin=\"anonymous\"></script><iframe src=\"javascript:void(0)\" title=\"\" role=\"presentation\" style=\"width: 0px; height: 0px; border: 0px; display: none;\"></iframe><script>var aPageStart = (new Date()).getTime();</script><meta charset=\"utf-8\">","2":"<script type=\"text/javascript\">window.ue_mkt = \"scna\";</script>"}} [object Object]", source: https://images-na.ssl-images-amazon.com/images/I/21auWwkMYgL.js (4)
+[36944:32224:0422/140321.081:INFO:CONSOLE:2] "AG Grid: Did not find icon undefined", source: https://d1uznvntk80v7s.cloudfront.net/katal.components-with-data-grid.0021ad3edd0b5d51ec36.min.js (2)
+[36944:27088:0422/140341.689:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+[36944:27088:0422/140507.115:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+[36944:27088:0422/140856.161:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+[36944:27088:0422/141455.191:ERROR:google_apis\gcm\engine\registration_request.cc:291] Registration response error message: DEPRECATED_ENDPOINT
+[36944:32224:0422/142023.588:ERROR:chrome\browser\ui\views\user_education\impl\browser_user_education_interface_impl.cc:178] Attempting to show IPH IPH_ExtensionsZeroStatePromo before browser initialization complete; IPH will not be shown.
+[33664:3112:0422/142023.595:INFO:third_party\webrtc\rtc_base\cpu_info.cc:77] Available number of cores: 16
+[36944:32224:0422/142023.615:ERROR:chrome\browser\ui\webui\ntp\new_tab_ui.cc:53] Requested load of chrome://newtab/ for incorrect profile type.
+[17204:33944:0422/142023.743:INFO:third_party\webrtc\rtc_base\cpu_info.cc:77] Available number of cores: 16
+[36944:32224:0422/142040.269:ERROR:chrome\browser\ui\webui\ntp\new_tab_ui.cc:53] Requested load of chrome://newtab/ for incorrect profile type.
+[36944:32224:0422/143726.571:ERROR:chrome\browser\ui\webui\ntp\new_tab_ui.cc:53] Requested load of chrome://newtab/ for incorrect profile type.

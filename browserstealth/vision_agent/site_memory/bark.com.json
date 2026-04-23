@@ -1,0 +1,42 @@
+{
+  "domain": "bark.com",
+  "lessons": [
+    {
+      "text": "Task completed in 95 actions: 1. Log in with my credentials and navigate to the Leads tab\n2. go through each of the leads - then look at the details o",
+      "type": "success",
+      "url": "https://www.bark.com/sellers/dashboard/",
+      "ts": "2026-04-17T13:21:12.875189"
+    },
+    {
+      "text": "Task completed in 92 actions: 1. Log in with my credentials and navigate to the Leads tab\n2. go through each of the leads - then look at the details o",
+      "type": "success",
+      "url": "https://www.bark.com/sellers/dashboard/",
+      "ts": "2026-04-17T14:05:47.561375"
+    },
+    {
+      "text": "Task completed in 0 actions: 1. Log in with my credentials and navigate to the Leads tab\n2. go through each of the leads - then look at the details o",
+      "type": "success",
+      "url": "https://www.bark.com/en/us/",
+      "ts": "2026-04-17T15:35:18.574199"
+    },
+    {
+      "text": "Task completed in 2 actions: 1. Log in with my credentials and navigate to the Leads tab\n2. go through each of the leads - then look at the details o",
+      "type": "success",
+      "url": "https://www.bark.com/en/us/",
+      "ts": "2026-04-17T16:57:18.857519"
+    },
+    {
+      "text": "Task completed in 52 actions: Log in with my credentials and navigate to the Leads tab\ngo through each of the leads - then look at the details of the ",
+      "type": "success",
+      "url": "https://www.bark.com/sellers/dashboard/",
+      "ts": "2026-04-17T17:30:14.690746"
+    },
+    {
+      "text": "Task completed in 55 actions: CRITICAL \u2014 BROWSER ALREADY OPEN: Do NOT navigate, reload, or go to any URL. The browser is showing the correct page righ",
+      "type": "success",
+      "url": "https://www.bark.com/sellers/dashboard/",
+      "ts": "2026-04-22T15:16:01.012470"
+    }
+  ],
+  "pages": {}
+}
