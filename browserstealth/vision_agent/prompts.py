@@ -1,1 +1,1 @@
-COORDINATOR_TEMPLATE = "Task: {task} URL: {url} Steps: {completed_steps} History: {action_history} Memory: {site_memory}"
+COORDINATOR_TEMPLATE = "TASK: {task}\nURL: {url}\nDONE: {completed_steps}\nHISTORY: {action_history}\nMEMORY: {site_memory}"
