@@ -183,7 +183,7 @@ class VisionAnalyzer:
             target_description=target_description,
             img_w=img_w,
             img_h=img_h,
-        ))
+        )
 
         import time as _t
         last_err = None
@@ -195,7 +195,7 @@ class VisionAnalyzer:
                     target_description=refined_target,
                     img_w=img_w,
                     img_h=img_h,
-                ))
+                )
                 messages = [
                     {"role": "system", "content": prompts.SYSTEM_JSON_COORDS},
                     {"role": "user", "content": [
@@ -336,10 +336,10 @@ class VisionAnalyzer:
             # Only take the last 5 relevant actions to avoid context bloat
             relevant = [a for a in action_history if a.get('action') in ('click', 'type', 'scroll', 'click_effect', 'click_failed', 'click_mismatch')]
             for a in relevant[-5:]:
-            active_plan=plan_str,
-            action_history=hist_str,
-            semantic_map=semantic_map or 'No semantic map available.'
-        ))
+                reason = a.get('reasoning', '')
+                hist_str += f"- {a['action']}: {reason}\n"
+        hist_str = hist_str or "No actions taken in this session yet."
+
         prompt = prompts.COORDINATOR_TEMPLATE.format_map(SafeDict(
             task_instruction=task_instruction,
             milestones=milestones_str,
@@ -438,8 +438,8 @@ class VisionAnalyzer:
     def _build_analysis_prompt(self, task_instruction, context, directive=None, semantic_map=None):
         context_block = f"PREVIOUS ACTIONS:\n{context}\n\n" if context else ""
         directive_block = f"CURRENT DIRECTIVE FROM COORDINATOR:\n{directive}\n\n" if directive else ""
-            semantic_map=semantic_map or 'None'
-        ))
+        semantic_block = f"\nSEMANTIC MAP OF PAGE ELEMENTS (Use [id] for precision):\n{semantic_map}\n\n" if semantic_map else ""
+        return prompts.MAIN_AGENT_TEMPLATE.format_map(SafeDict(
             task_instruction=task_instruction,
             directive_block=directive_block,
             context_block=context_block + semantic_block,
@@ -541,13 +541,13 @@ class VisionAnalyzer:
             parts.append({"text": f"MEMORY FROM PREVIOUS RUNS ON THIS SITE:\n{site_memory}\n\n"})
 
         completed_section = ""
-            completed_section = prompts.PLANNER_COMPLETED_SECTION.format_map(SafeDict(items=items_str))
+        if completed_work:
             items_str = "\n".join(f"  ✅ {m}" for m in completed_work)
-            completed_section = prompts.PLANNER_COMPLETED_SECTION.format_map(SafeDict(items=items_str)
+            completed_section = prompts.PLANNER_COMPLETED_SECTION.format_map(SafeDict(items=items_str))
 
         parts.append({"text": prompts.PLANNER_TEMPLATE.format_map(SafeDict(
+            task_instruction=task_instruction,
             completed_section=completed_section
-        ))})
         )})
 
         # Add all page screenshots
@@ -633,8 +633,8 @@ class VisionAnalyzer:
         """
         Fresh-eyes agent called when the main agent is stuck on a specific target.
         No history, no accumulated failures — just a screenshot and one job.
-            reasoning=reasoning
-        ))
+        Returns a dict: {action, coordinates, key, reasoning} or None on failure.
+        """
         image_base64 = self.encode_image(screenshot_path)
         context_line = f"CONTEXT: {task_hint}\n" if task_hint else ""
         prompt = prompts.RESCUE_TEMPLATE.format_map(SafeDict(
