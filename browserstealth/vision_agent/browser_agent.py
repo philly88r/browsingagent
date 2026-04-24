@@ -154,6 +154,13 @@ class BrowserAgent:
         return filepath
 
     def execute_action(self, action):
+        if action_type == 'scroll':
+            amount = params.get('amount', 500)
+            self.log(f"   [Action] Scrolling by {amount}px...")
+            self.driver.execute_script(f"window.scrollBy(0, {amount})")
+            time.sleep(1)
+            return True
+
         atype, params = action.get('action'), action.get('parameters', {})
         if atype == 'navigate': self.driver.get(params.get('url')); return True
         elif atype == 'click':
