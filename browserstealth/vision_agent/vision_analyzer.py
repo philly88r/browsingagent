@@ -1,4 +1,7 @@
-class SafeDict(dict):\n    def __missing__(self, key): return '{' + key + '}'\n\nimport base64
+class SafeDict(dict):
+    def __missing__(self, key): return '{' + key + '}'
+
+import base64
 import json
 import os
 import re
