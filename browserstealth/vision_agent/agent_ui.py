@@ -242,4 +242,4 @@ class BrowserAgent:
 
 if __name__ == "__main__":
     with BrowserAgent() as agent:
-        agent.run_task("Test", "https://google.com")
+        agent.run_task("Test", "https://kdp.amazon.com/marketing/manager")
