@@ -37,16 +37,27 @@ class BrowserAgent:
         if self.log_callback: self.log_callback(m)
         else: print(m)
 
+    
     def start_browser(self):
         opts = Options()
         if self.headless: opts.add_argument('--headless')
         opts.add_argument(f'--window-size={self.window_size[0]},{self.window_size[1]}')
         opts.add_argument('--disable-blink-features=AutomationControlled')
+        
+        # INJECTING LOCAL PROFILE PATH
+        user_data_dir = os.path.join(os.environ['LOCALAPPDATA'], 'Google', 'Chrome', 'User Data')
+        opts.add_argument(f'--user-data-dir={user_data_dir}')
+        # Using the profile directory if specified, otherwise 'Default'
+        profile = os.getenv('CHROME_PROFILE', 'Default')
+        opts.add_argument(f'--profile-directory={profile}')
+        
         try:
             srv = Service(ChromeDriverManager().install())
             self.driver = webdriver.Chrome(service=srv, options=opts)
-        except: self.driver = webdriver.Chrome(options=opts)
-        self.log("✓ Browser started")
+        except: 
+            self.driver = webdriver.Chrome(options=opts)
+        self.log(f"✓ Browser started with profile: {profile}")
+
 
     def get_semantic_map(self):
         if not self.driver: return ""
