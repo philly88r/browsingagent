@@ -185,7 +185,7 @@ class VisionAnalyzer:
             target_description=target_description,
             img_w=img_w,
             img_h=img_h,
-        )
+        ))
 
         import time as _t
         last_err = None
@@ -197,7 +197,7 @@ class VisionAnalyzer:
                     target_description=refined_target,
                     img_w=img_w,
                     img_h=img_h,
-                )
+                ))
                 messages = [
                     {"role": "system", "content": prompts.SYSTEM_JSON_COORDS},
                     {"role": "user", "content": [
@@ -348,7 +348,7 @@ class VisionAnalyzer:
             active_plan=plan_str,
             action_history=hist_str,
             semantic_map=semantic_map or "No semantic map available."
-        )
+        ))
 
         try:
             print(f"   [Coordinator] Analyzing task state...")
@@ -445,7 +445,7 @@ class VisionAnalyzer:
             task_instruction=task_instruction,
             directive_block=directive_block,
             context_block=context_block + semantic_block,
-        )
+        ))
 
     def _parse_action(self, response_text):
         """Parse the action from the model's response. Handles prose-wrapping models."""
@@ -641,7 +641,7 @@ class VisionAnalyzer:
             page_url=page_url,
             stuck_target=stuck_target,
             context_line=context_line
-        )
+        ))
         try:
             print(f"   🆘 [Rescue] Fresh agent analyzing — stuck on: {stuck_target[:60]}")
             messages = [
