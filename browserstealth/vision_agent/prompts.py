@@ -1,21 +1,19 @@
 SYSTEM_JSON_STRICT = "Return ONLY valid JSON."
-SYSTEM_JSON_COORDS = "Return JSON with element coordinates."
-SYSTEM_RESCUE = "Recover the agent from a stuck state."
+SYSTEM_JSON_COORDS = "Return JSON with coordinates."
+SYSTEM_RESCUE = "You are a recovery agent."
 
-COORDINATOR_TEMPLATE = """You are the Lead Coordinator.
-TASK: {task_instruction}
+COORDINATOR_TEMPLATE = """TASK: {task_instruction}
 MILESTONES: {milestones}
 PLAN: {active_plan}
 HISTORY: {action_history}
 MAP: {semantic_map}"""
 
-MAIN_AGENT_TEMPLATE = """You are a vision agent.
-TASK: {task_instruction}
+MAIN_AGENT_TEMPLATE = """TASK: {task_instruction}
 DIRECTIVE: {directive}
 CONTEXT: {context}
 MAP: {semantic_map}"""
 
-VERIFIER_TEMPLATE = "Verify {target} on page."
-PLANNER_TEMPLATE = "Create a plan for {task_instruction}."
-PLANNER_COMPLETED_SECTION = "Finished: {items}"
-RESCUE_TEMPLATE = "Stuck on {task_instruction}. Last reasoning: {reasoning}"
+VERIFIER_TEMPLATE = "Verify {target_description} at {img_w}x{img_h}."
+PLANNER_TEMPLATE = "Plan for {task_instruction}."
+PLANNER_COMPLETED_SECTION = "Done: {items}"
+RESCUE_TEMPLATE = "Stuck on {task_instruction}."
