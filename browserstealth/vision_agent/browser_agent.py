@@ -168,7 +168,9 @@ class BrowserAgent:
 
     def run_task(self, task, starting_url=None):
         self.log(f"🎯 TASK: {task}")
-        if self.driver is None: self.start_browser()
+        if self.driver is None:
+            self.log("🚀 Initializing browser session...")
+            self.start_browser()
         if starting_url: self.driver.get(starting_url)
         for iteration in range(1, self.max_iterations + 1):
             self.log(f"\n🔄 Iteration {iteration}")
