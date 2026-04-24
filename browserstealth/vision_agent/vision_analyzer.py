@@ -548,8 +548,8 @@ class VisionAnalyzer:
             completed_section = prompts.PLANNER_COMPLETED_SECTION.format_map(SafeDict(items=items_str))
 
         parts.append({"text": prompts.PLANNER_TEMPLATE.format_map(SafeDict(
-        parts.append({"text": prompts.PLANNER_TEMPLATE.format_map(SafeDict(\n            completed_section=completed_section
-        )})
+            task_instruction=task_instruction,
+            completed_section=completed_section
         ))})\n        # Add all page screenshots
         for i, path in enumerate(screenshot_paths):
             try:
