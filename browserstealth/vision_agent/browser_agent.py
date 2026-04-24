@@ -106,7 +106,7 @@ class BrowserAgent:
         opts.add_experimental_option('useAutomationExtension', False)
         
         # --- LOCAL PROFILE PATH ---
-        user_data = "C:\Users\info\AppData\Local\Google\Chrome\User Data"
+        user_data = r"C:\Users\info\AppData\Local\Google\Chrome\User Data"
         opts.add_argument(f"--user-data-dir={user_data}")
         profile_folder = self.chrome_profile_dir or os.getenv('CHROME_PROFILE', 'Default')
         opts.add_argument(f"--profile-directory={profile_folder}")
