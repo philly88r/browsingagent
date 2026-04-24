@@ -545,7 +545,7 @@ class VisionAnalyzer:
         completed_section = ""
         if completed_work:
             items_str = "\n".join(f"  ✅ {m}" for m in completed_work)
-            completed_section = prompts.PLANNER_COMPLETED_SECTION.format_map(SafeDict(items=items_str)
+            completed_section = prompts.PLANNER_COMPLETED_SECTION.format_map(SafeDict(items=items_str))
 
         parts.append({"text": prompts.PLANNER_TEMPLATE.format_map(SafeDict(
             task_instruction=task_instruction,
