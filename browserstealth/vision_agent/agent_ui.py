@@ -436,7 +436,7 @@ class AgentUI:
                 semantic_map = self.agent.get_semantic_map()
                 
                 # This calls your Vision AI with the new semantic map
-                action = self.agent.vision.analyze_screenshot(screenshot_path, task, semantic_map=semantic_map)
+                action = self.agent.vision.analyze_screenshot(screenshot_path, task, "No context provided", semantic_map=semantic_map)
                 
                 # Logging Seer output
                 saw = action.get('screenshot_description', '') or action.get('reasoning', '')
