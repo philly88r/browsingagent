@@ -99,13 +99,29 @@ class BrowserAgent:
         opts.add_argument('--no-sandbox')
         opts.add_argument('--disable-dev-shm-usage')
         opts.add_argument('--remote-debugging-pipe')
+        opts.add_argument('--process-per-site')
+        opts.add_argument('--disable-features=site-per-process,IsolateOrigins')
+        opts.add_argument('--disable-extensions')
+        opts.add_argument('--disable-background-networking')
+        opts.add_argument('--disable-background-timer-throttling')
+        opts.add_argument('--disable-backgrounding-occluded-windows')
+        opts.add_argument('--disable-renderer-backgrounding')
         
-        # Windows Path with Raw String literal
+        # Copy profile to temp to avoid lock conflicts
+        import tempfile, shutil
         user_data = r"C:\Users\info\AppData\Local\Google\Chrome\User Data"
-        opts.add_argument(f"--user-data-dir={user_data}")
-        
         profile_folder = self.chrome_profile_dir or os.getenv('CHROME_PROFILE', 'Default')
+        temp_dir = tempfile.mkdtemp(prefix="chrome_agent_")
+        src_profile = os.path.join(user_data, profile_folder)
+        if os.path.exists(src_profile):
+            self.log(f"   [Setup] Copying profile '{profile_folder}' to temp dir...")
+            shutil.copytree(src_profile, os.path.join(temp_dir, profile_folder), dirs_exist_ok=True)
+            self.log(f"   [Setup] Profile copied to {temp_dir}")
+        else:
+            self.log(f"   [Setup] Profile not found, using clean temp profile")
+        opts.add_argument(f"--user-data-dir={temp_dir}")
         opts.add_argument(f"--profile-directory={profile_folder}")
+        self._temp_profile_dir = temp_dir
         
         try:
             service = Service(ChromeDriverManager().install())
@@ -120,7 +136,12 @@ class BrowserAgent:
         
         self.driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
         self.log(f"✓ Browser session established.")
-        self.ensure_browser_geometry()
+
+    def ensure_browser_geometry(self):
+        try:
+            self.driver.set_window_size(self.window_size[0], self.window_size[1])
+            self.driver.execute_script("if(document.body) document.body.style.zoom='100%'")
+        except: pass
         self.movement = HumanLikeMovement(self.driver)
         self.verification = VerificationHandler(self)
 
