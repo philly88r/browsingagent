@@ -1,4 +1,4 @@
-COORDINATOR_TEMPLATE = """You are the Lead Coordinator for an autonomous browser agent. 
+COORDINATOR_TEMPLATE = """You are the Lead Coordinator for an autonomous browser agent.
 Your job is to look at the current state and provide a single high-level directive.
 
 TASK: {task}
