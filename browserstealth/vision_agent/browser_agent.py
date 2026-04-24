@@ -6,7 +6,6 @@ import base64
 from datetime import datetime
 from dotenv import load_dotenv
 
-# Force override system environment variables
 load_dotenv(override=True)
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -14,232 +13,112 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 from webdriver_manager.chrome import ChromeDriverManager
 
-# --- PHILLIP: ENSURE THESE CLASSES ARE PRESENT IN YOUR DIRECTORY ---
 try:
     from vision_analyzer import VisionAnalyzer
     from human_like_movement import HumanLikeMovement
     from verification_handler import VerificationHandler
     from agent_memory import AgentMemory
 except ImportError:
-    class VisionAnalyzer: 
-        def __init__(self, model=None): pass
-        def plan_page(self, *args, **kwargs): return "Step 1: Focus ID a-autoid-1-announce"
+    class VisionAnalyzer:
+        def __init__(self, **kwargs): pass
         def analyze_screenshot(self, *args, **kwargs): return {"action": "wait"}
+        def plan_page(self, *args, **kwargs): return "Plan"
     class HumanLikeMovement:
         def __init__(self, driver): self.driver = driver
         def click_at(self, x, y): self.driver.execute_script(f"document.elementFromPoint({x},{y}).click()")
-        def type_text(self, text): pass
-        def press_key(self, key): pass
-        def scroll(self, *args, **kwargs): pass
+        def type_text(self, t): pass
     class VerificationHandler:
-        def __init__(self, agent): pass
+        def __init__(self, a): pass
     class AgentMemory:
-        def recall(self, url): return ""
-        def save_lesson(self, *args): pass
+        def recall(self, u): return ""
 
 class BrowserAgent:
-    """
-    ULTIMATE FIXED AGENT:
-    - Added missing run_task method (CRITICAL)
-    - Added missing scan_and_plan_page method
-    - Iframe-Recursive Semantic Mapping
-    - Stability fixes for WinError 193
-    - User Profile loading support
-    """
-    
     def __init__(self, headless=False, window_size=(1280, 720), model=None, instance_id=None, log_callback=None):
         self.headless = headless
         self.window_size = window_size
-        self.window_position = (0, 0)
         self.driver = None
         self.vision = VisionAnalyzer(model=model)
-        self.movement = None
-        self.verification = None
-        self.action_history = []
-        self.click_history = []
-        self.last_scroll_position = 0
-        self._auto_scroll_container = None 
-        self._auto_scroll_count = 0 
-        self._scroll_exhaustion_total = 0 
-        self.last_dom_hash = None
-        self.permanently_failed_targets = {} 
-
         self.log_callback = log_callback
-        self.username = os.getenv('AGENT_USERNAME', '')
-        self.password = os.getenv('AGENT_PASSWORD', '')
-        self.upload_files = [] 
-        self.notes = [] 
-        self.notes_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'notes')
-        os.makedirs(self.notes_dir, exist_ok=True)
-        self.max_iterations = 200
-        
-        self.chrome_binary = None 
-        self.chrome_profile_dir = None 
-        self.chrome_user_data_dir = None 
-        
-        self.memory = AgentMemory()
-        self.current_page_plan = "" 
-        self.last_planned_url = "" 
-        self.current_site_lessons = "" 
-        self.completed_milestones = [] 
-        self.iterations_on_current_page = 0 
-        self.current_task_instruction = "" 
-        self.consecutive_note_dupes = 0 
-        self._exhausted_containers = set() 
-        
         self.instance_id = instance_id or "default"
-        base_dir = os.path.dirname(os.path.abspath(__file__))
-        self.screenshot_dir = os.path.join(base_dir, 'screenshots', self.instance_id)
+        self.max_iterations = 200
+        self.last_semantic_map = []
+        self.memory = AgentMemory()
+        self.current_page_plan = ""
+        self.screenshot_dir = os.path.join(os.path.dirname(__file__), 'screenshots', self.instance_id)
         os.makedirs(self.screenshot_dir, exist_ok=True)
-        self._default_profile_dir = os.path.join(base_dir, 'browser_profile')
-        self.last_semantic_map = [] 
 
-    def log(self, message):
-        if self.log_callback: self.log_callback(message)
-        else: print(message)
+    def log(self, m):
+        if self.log_callback: self.log_callback(m)
+        else: print(m)
 
-    def scan_and_plan_page(self, task_instruction):
-        """Restored planner method."""
-        self.current_task_instruction = task_instruction
-        self.log("\n📋 [Planner] Scanning full page for task plan...")
-        path = self.take_screenshot("full_page_scan.png")
-        url = self.driver.current_url if self.driver else ""
-        site_memory = self.memory.recall(url) if url else ""
-        plan = self.vision.plan_page([path], task_instruction, site_memory)
-        if plan:
-            self.current_page_plan = plan
-            self.log("📋 [Planner] Plan updated.")
-        return plan
+    def start_browser(self):
+        opts = Options()
+        if self.headless: opts.add_argument('--headless')
+        opts.add_argument(f'--window-size={self.window_size[0]},{self.window_size[1]}')
+        opts.add_argument('--disable-blink-features=AutomationControlled')
+        try:
+            srv = Service(ChromeDriverManager().install())
+            self.driver = webdriver.Chrome(service=srv, options=opts)
+        except: self.driver = webdriver.Chrome(options=opts)
+        self.movement = HumanLikeMovement(self.driver)
+        self.log("✓ Browser started")
 
     def get_semantic_map(self):
-        """Deep Iframe Recursive Scan logic."""
         if not self.driver: return ""
+        time.sleep(1.5) # Wait for page/scroll to settle
         try:
-            self.log(" 🔍 Generating Recursive Semantic Map...")
             self.driver.execute_cdp_cmd("Accessibility.enable", {})
             self.driver.execute_cdp_cmd("DOM.enable", {})
-            interactive_roles = {"button", "link", "textbox", "checkbox", "combobox", "menuitem"}
-            all_semantic_elements = []
-            
-            def scan_context(prefix=""):
+            all_els = []
+            def scan(pref=""):
                 try:
-                    ax_tree = self.driver.execute_cdp_cmd("Accessibility.getFullAXTree", {})
-                    nodes = ax_tree.get('nodes', [])
+                    tree = self.driver.execute_cdp_cmd("Accessibility.getFullAXTree", {})
+                    nodes = tree.get('nodes', [])
+                    found = []
+                    for n in nodes:
+                        role = n.get('role', {}).get('value', '')
+                        name = n.get('name', {}).get('value', '').strip()
+                        if name and role in {'button','link','textbox','checkbox','combobox','listbox'}:
+                            bid = n.get('backendDOMNodeId')
+                            try:
+                                box = self.driver.execute_cdp_cmd("DOM.getBoxModel", {"backendNodeId": bid})
+                                c = box['model']['content']
+                                found.append({"id": f"{pref}e{len(all_els)+len(found)+1}", "role": role, "name": name, "center": [int(sum(c[0::2])/4), int(sum(c[1::2])/4)]})
+                            except: continue
+                    return found
                 except: return []
-                elements = []
-                for node in nodes:
-                    role = node.get('role', {}).get('value', 'generic')
-                    name = node.get('name', {}).get('value', '').strip()
-                    if role in interactive_roles and name:
-                        backend_id = node.get('backendDOMNodeId')
-                        if not backend_id: continue
-                        try:
-                            box = self.driver.execute_cdp_cmd("DOM.getBoxModel", {"backendNodeId": backend_id})
-                            content = box.get('model', {}).get('content')
-                            if content:
-                                elements.append({
-                                    "id": f"{prefix}e{len(all_semantic_elements) + len(elements) + 1}",
-                                    "role": role, "name": name,
-                                    "center": [int(sum(content[0::2])/4), int(sum(content[1::2])/4)]
-                                })
-                        except: continue
-                return elements
 
-            all_semantic_elements.extend(scan_context())
-            frames = self.driver.find_elements("tag name", "iframe")
-            for i, frame in enumerate(frames):
+            all_els.extend(scan())
+            iframes = self.driver.find_elements("tag name", "iframe")
+            for i, f in enumerate(iframes):
                 try:
-                    self.driver.switch_to.frame(frame)
-                    all_semantic_elements.extend(scan_context(prefix=f"f{i+1}-"))
+                    self.driver.switch_to.frame(f)
+                    all_els.extend(scan(f"f{i+1}-"))
                     self.driver.switch_to.parent_frame()
                 except: self.driver.switch_to.default_content()
             
-            self.last_semantic_map = all_semantic_elements
-            map_lines = ["--- SEMANTIC PAGE MAP ---"]
-            for el in all_semantic_elements:
-                map_lines.append(f"[{el['id']}] {el['role']} \"{el['name']}\"")
-            return "\n".join(map_lines)
-        except Exception as e:
-            return f"Map failed: {e}"
+            self.last_semantic_map = all_els
+            return "--- MAP ---\n" + "\n".join([f"[{e['id']}] {e['role']} '{e['name']}'" for e in all_els])
+        except Exception as e: return f"Error: {e}"
 
-    def start_browser(self):
-        chrome_options = Options()
-        if self.headless: chrome_options.add_argument('--headless')
-        chrome_options.add_argument(f'--window-size={self.window_size[0]},{self.window_size[1]}')
-        chrome_options.add_argument('--disable-blink-features=AutomationControlled')
-        
-        if self.chrome_user_data_dir:
-            chrome_options.add_argument(f'--user-data-dir={self.chrome_user_data_dir}')
-            if self.chrome_profile_dir:
-                chrome_options.add_argument(f'--profile-directory={self.chrome_profile_dir}')
-        
-        try:
-            service = Service(ChromeDriverManager().install())
-            self.driver = webdriver.Chrome(service=service, options=chrome_options)
-        except:
-            self.driver = webdriver.Chrome(options=chrome_options)
-        
-        self.driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
-        self.log("✓ Browser started successfully")
-        self.ensure_browser_geometry()
-        self.movement = HumanLikeMovement(self.driver)
-        self.verification = VerificationHandler(self)
-
-    def ensure_browser_geometry(self):
-        try:
-            self.driver.set_window_position(self.window_position[0], self.window_position[1])
-            self.driver.set_window_size(self.window_size[0], self.window_size[1])
-            self.driver.execute_script("if(document.body) document.body.style.zoom='100%'")
-        except: pass
-
-    def take_screenshot(self, name=None):
-        if name is None:
-            name = f"screenshot_{datetime.now().strftime('%Y%m%d_%H%M%S')}.png"
-        filepath = os.path.join(self.screenshot_dir, name)
-        if self.driver: self.driver.save_screenshot(filepath)
-        return filepath
-
-    def execute_action(self, action):
-        action_type = action.get('action')
-        params = action.get('parameters', {})
-        
-        if action_type == 'navigate':
-            self.driver.get(params.get('url'))
-            return True
-        elif action_type == 'click':
-            sid = params.get('semantic_id')
-            if sid and hasattr(self, 'last_semantic_map'):
-                match = next((el for el in self.last_semantic_map if el['id'] == sid), None)
-                if match: self.movement.click_at(*match['center']); return True
-        elif action_type == 'complete': return True
-        return False
-
-    def run_task(self, task_instruction, starting_url=None):
-        """Restored core task execution loop."""
-        self.log(f"🎯 TASK: {task_instruction}")
-        if self.driver is None: self.start_browser()
-        if starting_url: self.driver.get(starting_url)
-        
-        for iteration in range(1, self.max_iterations + 1):
-            self.log(f"\n🔄 Iteration {iteration}/{self.max_iterations}")
-            screenshot = self.take_screenshot()
-            semantic_map = self.get_semantic_map()
-            context = self._build_context()
+    def run_task(self, task, start_url=None):
+        if not self.driver: self.start_browser()
+        if start_url: self.driver.get(start_url)
+        for i in range(1, self.max_iterations + 1):
+            self.log(f"\\n🔄 Iteration {i}")
+            snap = os.path.join(self.screenshot_dir, f"step_{i}.png")
+            self.driver.save_screenshot(snap)
+            sem = self.get_semantic_map()
+            action = self.vision.analyze_screenshot(snap, task, f"Plan: {self.current_page_plan}", semantic_map=sem)
             
-            action = self.vision.analyze_screenshot(screenshot, task_instruction, context, semantic_map=semantic_map)
-            
-            res = self.execute_action(action)
-            if res is True or res == 'complete': break
+            atype = action.get('action')
+            params = action.get('parameters', {})
+            if atype == 'scroll':
+                self.driver.execute_script(f"window.scrollBy(0, {params.get('amount', 500)})")
+                time.sleep(1)
+            elif atype == 'click':
+                sid = params.get('semantic_id')
+                match = next((e for e in self.last_semantic_map if e['id'] == sid), None)
+                if match: self.movement.click_at(*match['center'])
+            elif atype == 'complete': break
             time.sleep(2)
-
-    def _build_context(self):
-        return f"Current Plan: {self.current_page_plan}"
-
-    def close(self):
-        if self.driver: self.driver.quit()
-    def __enter__(self): return self
-    def __exit__(self, *args): self.close()
-
-if __name__ == "__main__":
-    with BrowserAgent() as agent:
-        agent.run_task("Test", "https://google.com")
