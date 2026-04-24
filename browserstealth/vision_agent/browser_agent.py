@@ -174,7 +174,7 @@ class BrowserAgent:
             self.log(f"\n🔄 Iteration {iteration}")
             snap = self.take_screenshot()
             sem = self.get_semantic_map()
-            action = self.vision.analyze_screenshot(snap, task, f"Plan: {self.current_page_plan}", semantic_map=sem)
+            action = self.vision.analyze_screenshot(snap, task, context=f"Plan: {self.current_page_plan}", semantic_map=sem)
             if self.execute_action(action) is True: break
             time.sleep(2)
 
