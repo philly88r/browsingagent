@@ -1,3 +1,8 @@
+
+class SafeDict(dict):
+    def __missing__(self, key):
+        return '{' + key + '}'
+
 import base64
 import json
 import os
@@ -176,7 +181,7 @@ class VisionAnalyzer:
         except Exception:
             img_w, img_h = 1280, 720
 
-        prompt = prompts.VERIFIER_TEMPLATE.format(
+        prompt = prompts.VERIFIER_TEMPLATE.format_map(SafeDict(
             target_description=target_description,
             img_w=img_w,
             img_h=img_h,
@@ -188,7 +193,7 @@ class VisionAnalyzer:
         for attempt in range(3):
             try:
                 print(f"   [Verifier] Locating: {refined_target}" + (f" (retry {attempt})" if attempt else ""))
-                attempt_prompt = prompts.VERIFIER_TEMPLATE.format(
+                attempt_prompt = prompts.VERIFIER_TEMPLATE.format_map(SafeDict(
                     target_description=refined_target,
                     img_w=img_w,
                     img_h=img_h,
@@ -337,7 +342,7 @@ class VisionAnalyzer:
                 hist_str += f"- {a['action']}: {reason}\n"
         hist_str = hist_str or "No actions taken in this session yet."
 
-        prompt = prompts.COORDINATOR_TEMPLATE.format(
+        prompt = prompts.COORDINATOR_TEMPLATE.format_map(SafeDict(
             task_instruction=task_instruction,
             milestones=milestones_str,
             active_plan=plan_str,
@@ -436,7 +441,7 @@ class VisionAnalyzer:
         context_block = f"PREVIOUS ACTIONS:\n{context}\n\n" if context else ""
         directive_block = f"CURRENT DIRECTIVE FROM COORDINATOR:\n{directive}\n\n" if directive else ""
         semantic_block = f"\nSEMANTIC MAP OF PAGE ELEMENTS (Use [id] for precision):\n{semantic_map}\n\n" if semantic_map else ""
-        return prompts.MAIN_AGENT_TEMPLATE.format(
+        return prompts.MAIN_AGENT_TEMPLATE.format_map(SafeDict(
             task_instruction=task_instruction,
             directive_block=directive_block,
             context_block=context_block + semantic_block,
@@ -540,9 +545,9 @@ class VisionAnalyzer:
         completed_section = ""
         if completed_work:
             items_str = "\n".join(f"  ✅ {m}" for m in completed_work)
-            completed_section = prompts.PLANNER_COMPLETED_SECTION.format(items=items_str)
+            completed_section = prompts.PLANNER_COMPLETED_SECTION.format_map(SafeDict(items=items_str)
 
-        parts.append({"text": prompts.PLANNER_TEMPLATE.format(
+        parts.append({"text": prompts.PLANNER_TEMPLATE.format_map(SafeDict(
             task_instruction=task_instruction,
             completed_section=completed_section
         )})
@@ -634,7 +639,7 @@ class VisionAnalyzer:
         """
         image_base64 = self.encode_image(screenshot_path)
         context_line = f"CONTEXT: {task_hint}\n" if task_hint else ""
-        prompt = prompts.RESCUE_TEMPLATE.format(
+        prompt = prompts.RESCUE_TEMPLATE.format_map(SafeDict(
             page_url=page_url,
             stuck_target=stuck_target,
             context_line=context_line
