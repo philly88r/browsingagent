@@ -91,23 +91,19 @@ class BrowserAgent:
         except Exception as e: return f"Map failed: {e}"
 
 
+
     def start_browser(self):
         opts = Options()
-        if self.headless: opts.add_argument('--headless')
+        if self.headless: opts.add_argument('--headless=new')
         opts.add_argument(f'--window-size={self.window_size[0]},{self.window_size[1]}')
-        
-        # --- DETECTION BYPASS & STABILITY ---
-        opts.add_argument('--disable-blink-features=AutomationControlled')
         opts.add_argument('--no-sandbox')
         opts.add_argument('--disable-dev-shm-usage')
-        opts.add_argument('--remote-debugging-port=9222')
-        opts.add_argument('--disable-gpu')
-        opts.add_experimental_option("excludeSwitches", ["enable-automation"])
-        opts.add_experimental_option('useAutomationExtension', False)
+        opts.add_argument('--remote-debugging-pipe')
         
-        # --- LOCAL PROFILE PATH ---
+        # Windows Path with Raw String literal
         user_data = r"C:\Users\info\AppData\Local\Google\Chrome\User Data"
         opts.add_argument(f"--user-data-dir={user_data}")
+        
         profile_folder = self.chrome_profile_dir or os.getenv('CHROME_PROFILE', 'Default')
         opts.add_argument(f"--profile-directory={profile_folder}")
         
@@ -115,15 +111,19 @@ class BrowserAgent:
             service = Service(ChromeDriverManager().install())
             self.driver = webdriver.Chrome(service=service, options=opts)
         except Exception as e:
-            self.log(f"Driver Error: {e}")
-            self.driver = webdriver.Chrome(options=opts)
+            self.log(f"   [Driver] Profile error (likely locked): {e}")
+            self.log("   [Driver] Starting STABLE fallback session...")
+            fallback_opts = Options()
+            if self.headless: fallback_opts.add_argument('--headless=new')
+            fallback_opts.add_argument('--no-sandbox')
+            self.driver = webdriver.Chrome(options=fallback_opts)
         
-        # Remove webdriver flag
         self.driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
-        self.log(f"✓ Browser started with Profile Folder: {profile_folder}")
+        self.log(f"✓ Browser session established.")
         self.ensure_browser_geometry()
         self.movement = HumanLikeMovement(self.driver)
         self.verification = VerificationHandler(self)
+
 
 
     def take_screenshot(self, name=None):
