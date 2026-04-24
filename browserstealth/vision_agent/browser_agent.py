@@ -90,22 +90,41 @@ class BrowserAgent:
             return "--- SEMANTIC PAGE MAP ---\n" + "\n".join([f"[{e['id']}] {e['role']} \"{e['name']}\"" for e in all_els])
         except Exception as e: return f"Map failed: {e}"
 
+
     def start_browser(self):
         opts = Options()
         if self.headless: opts.add_argument('--headless')
         opts.add_argument(f'--window-size={self.window_size[0]},{self.window_size[1]}')
-        user_data = "C:\\Users\\info\\AppData\\Local\\Google\\Chrome\\User Data"
-        opts.add_argument(f"--user-data-dir={user_data}")
-        profile = self.chrome_profile_dir or os.getenv('CHROME_PROFILE', 'Default')
-        opts.add_argument(f"--profile-directory={profile}")
+        
+        # --- DETECTION BYPASS & STABILITY ---
         opts.add_argument('--disable-blink-features=AutomationControlled')
+        opts.add_argument('--no-sandbox')
+        opts.add_argument('--disable-dev-shm-usage')
+        opts.add_argument('--remote-debugging-port=9222')
+        opts.add_argument('--disable-gpu')
+        opts.add_experimental_option("excludeSwitches", ["enable-automation"])
+        opts.add_experimental_option('useAutomationExtension', False)
+        
+        # --- LOCAL PROFILE PATH ---
+        user_data = "C:\Users\info\AppData\Local\Google\Chrome\User Data"
+        opts.add_argument(f"--user-data-dir={user_data}")
+        profile_folder = self.chrome_profile_dir or os.getenv('CHROME_PROFILE', 'Default')
+        opts.add_argument(f"--profile-directory={profile_folder}")
+        
         try:
-            srv = Service(ChromeDriverManager().install())
-            self.driver = webdriver.Chrome(service=srv, options=opts)
-        except: self.driver = webdriver.Chrome(options=opts)
-        self.log(f"✓ Browser started with profile: {profile}")
+            service = Service(ChromeDriverManager().install())
+            self.driver = webdriver.Chrome(service=service, options=opts)
+        except Exception as e:
+            self.log(f"Driver Error: {e}")
+            self.driver = webdriver.Chrome(options=opts)
+        
+        # Remove webdriver flag
+        self.driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
+        self.log(f"✓ Browser started with Profile Folder: {profile_folder}")
+        self.ensure_browser_geometry()
         self.movement = HumanLikeMovement(self.driver)
         self.verification = VerificationHandler(self)
+
 
     def take_screenshot(self, name=None):
         if name is None: name = f"screenshot_{datetime.now().strftime('%Y%m%d_%H%M%S')}.png"
